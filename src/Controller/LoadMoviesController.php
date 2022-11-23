@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoadMoviesController extends AbstractController
 {
     #[Route('/load/movies', name: 'app_load_movies')]
-    public function index(MovieRepository $movieRepository, GenreRepository $genreRepository): Response
+    public function __invoke(MovieRepository $movieRepository, GenreRepository $genreRepository): Response
     {
         $matrixMovie = new Movie();
         $matrixMovie->setTitle('The Matrix');

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Movie list - '~parent() %}
+
+{% block body %}
+    <ul class="movies">
+    {% for movie in movies %}
+        <li><a href="{{ path('app_movie_details', {'id': movie.id}) }}">{{ movie.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
