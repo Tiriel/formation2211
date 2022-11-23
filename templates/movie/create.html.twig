@@ -3,5 +3,8 @@
 {% block title 'Create a new Movie - '~parent() %}
 
 {% block body %}
-    {{ form(creationForm) }}
+    {{ form_start(creationForm) }}
+        {{ form_widget(creationForm) }}
+        <button type="submit" class="btn btn-primary">Create movie</button>
+    {{ form_end(creationForm) }}
 {% endblock %}

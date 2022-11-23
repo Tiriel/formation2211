@@ -72,10 +72,4 @@ class Genre
 
         return $this;
     }
-
-    //@todo : remove the next magic method when a better solution has been found
-    public function __toString(): string
-    {
-        return $this->name;
-    }
 }

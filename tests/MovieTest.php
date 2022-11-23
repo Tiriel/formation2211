@@ -2,10 +2,15 @@
 
 namespace App\Tests;
 
+use App\Entity\Genre;
+use App\Entity\Movie;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MovieTest extends WebTestCase
 {
+    public function setUp() {
+    }
+
     public function testItShowsTheMovieList(): void
     {
         $client = static::createClient();
