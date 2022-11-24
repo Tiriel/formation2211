@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Movie details - '~parent() %}
+{% block title 'Movie details - ' ~ parent() %}
 
 {% block body %}
     <div class="details">
         <h3>{{ movie.title }}</h3>
+        <img src="{{ moviePoster }}"/>
         <p>{{ movie.description }}</p>
         <p>Date : {{ movie.releaseDate|date('d-m-Y') }}</p>
         <p>Genre : {{ movie.genre.name }}</p>

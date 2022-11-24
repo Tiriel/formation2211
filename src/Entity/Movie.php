@@ -28,6 +28,9 @@ class Movie
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $releaseDate = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $director = '';
+
     #[Assert\NotBlank]
     #[ORM\ManyToOne(inversedBy: 'movies')]
     private ?Genre $genre = null;
