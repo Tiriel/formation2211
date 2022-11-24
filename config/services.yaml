@@ -25,3 +25,9 @@ services:
     App\Omdb\OmdbGateway:
         arguments:
             $apiKey: "%env(OMDB_API_KEY)%"
+#
+#when@dev:
+#    services:
+#        App\Omdb\LoggableOmdbGateway:
+#            decorates: App\Omdb\OmdbGateway
+#
