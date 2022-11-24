@@ -7,11 +7,13 @@ use App\Omdb\OmdbGateway;
 use App\Repository\MovieRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
@@ -21,6 +23,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class OmdbQueryCommand extends Command
 {
 
+    /**
+     * COnstructeur de la class OmdbQueryCommand
+     */
     public function __construct(
         private OmdbGateway $omdbGateway,
         private MovieRepository $movieRepository,
@@ -32,7 +37,7 @@ class OmdbQueryCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('title', InputArgument::REQUIRED, 'The title of the movie')
+            ->addArgument('title', InputArgument::OPTIONAL, 'The title of the movie')
         ;
     }
 
@@ -41,8 +46,18 @@ class OmdbQueryCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $title = $input->getArgument('title');
 
-        $movieCollection = $this->omdbGateway->searchByTitle($title);
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
+
+        if(!$title) {
+            $title = $helper->ask(
+                $input,
+                $output,
+                new Question('Please provide a movie title to search for.')
+            );
+        }
+
+        $movieCollection = $this->omdbGateway->searchByTitle($title);
 
         /**
         $movieCollection = [
@@ -52,7 +67,7 @@ class OmdbQueryCommand extends Command
          */
 
         $choiceOptions = array_map(fn(array $movie) => $movie['Title'], $movieCollection);
-        
+
         $question = new ChoiceQuestion(
             'Please choose from the following list of movies.',
             // choices can also be PHP objects that implement __toString() method

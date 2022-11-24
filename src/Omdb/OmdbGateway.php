@@ -55,6 +55,7 @@ class OmdbGateway
 
         $json = $this->httpClient->request('GET', $omdbQueryUrl)->toArray();
 
+        // At this point, the ImdbId should be known
         if(isset($json['Error'])) {
             throw new Exception($json['Error']);
         }
