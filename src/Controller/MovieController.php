@@ -46,6 +46,12 @@ class MovieController extends AbstractController
         $form = $this->createForm(MovieType::class);
         $form->handleRequest($request);
 
+        $title = $movie->getTitleNotNullable();
+        if(count($title) ===0 ) {
+            $title = 'N.A.';
+        }
+
+        $title
         if ($form->isSubmitted() && $form->isValid()) {
             $movie = $form->getData();
             $movieRepository->save($movie, true);

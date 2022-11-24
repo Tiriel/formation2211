@@ -6,11 +6,14 @@ namespace App\Omdb;
 use App\Entity\Movie;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsDecorator(OmdbGateway::class, priority: 50)]
 class CacheableOmdbGateway extends OmdbGateway
 {
+    const EXPIRES_AFTER = 100;
+
     public function __construct(
         private OmdbGateway $actualGateway,
         private CacheInterface $cache,
@@ -28,7 +31,8 @@ class CacheableOmdbGateway extends OmdbGateway
     public function searchByTitle(string $title): array
     {
         $cacheKey = sprintf('search_'.md5($title));
-        return $this->cache->get($cacheKey, function() use ($title) {
+        return $this->cache->get($cacheKey, function(ItemInterface $item) use ($title) {
+            $item->expiresAfter(self::EXPIRES_AFTER);
             return $this->actualGateway->searchByTitle($title);
         });
     }
