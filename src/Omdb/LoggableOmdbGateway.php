@@ -33,4 +33,9 @@ class LoggableOmdbGateway extends OmdbGateway
         $this->logger->info('getMovieById was called');
         return $this->actualGateway->getPosterByMovie($movie);
     }
+    public function getRatedByMovie(Movie $movie): string
+    {
+        $this->logger->info('getRatedByMovie was called');
+        return $this->actualGateway->getRatedByMovie($movie);
+    }
 }

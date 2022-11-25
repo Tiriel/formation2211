@@ -54,6 +54,15 @@ class AppFixtures extends Fixture
         $admin->setPassword($this->hasher->hashPassword($admin, 'admin1234'));
         $manager->persist($admin);
 
+        $user15 = new User();
+        $user15
+            ->setEmail('user15@example.com')
+            ->setRoles(['ROLE_USER'])
+            ->setBirthday(new \DateTimeImmutable('21-11-2007'))
+        ;
+        $user15->setPassword($this->hasher->hashPassword($user15, 'abcd1234'));
+        $manager->persist($user15);
+
         $manager->flush();
     }
 }

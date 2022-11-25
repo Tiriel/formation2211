@@ -18,6 +18,19 @@ class OmdbGateway
 
     private const OMDB_QUERY_FORMAT = 'https://www.omdbapi.com/?apikey=%s&t=%s';
 
+    public function getRatedByMovie(Movie $movie): string
+    {
+        $omdbQueryUrl = sprintf(
+            self::OMDB_QUERY_FORMAT,
+            $this->apiKey,
+            $movie->getTitle()
+        );
+
+        $json = $this->httpClient->request('GET', $omdbQueryUrl)->toArray();
+
+        return $json['Rated'] ?? '';
+    }
+
     public function getPosterByMovie(Movie $movie): string
     {
         $omdbQueryUrl = sprintf(

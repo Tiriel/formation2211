@@ -7,6 +7,7 @@
         <h3>{{ movie.title }}</h3>
         <img src="{{ moviePoster }}"/>
         <p>{{ movie.description }}</p>
+        <p>{{ movie.rated }}</p>
         <p>Date : {{ movie.releaseDate|date('d-m-Y') }}</p>
         <p>Genre : {{ movie.genre.name }}</p>
     </div>

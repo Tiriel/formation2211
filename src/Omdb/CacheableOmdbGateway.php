@@ -44,4 +44,12 @@ class CacheableOmdbGateway extends OmdbGateway
             return $this->actualGateway->getPosterByMovie($movie);
         });
     }
+
+    public function getRatedByMovie(Movie $movie): string
+    {
+        $cacheKey = sprintf('rated_'.md5($movie->getTitle()));
+        return $this->cache->get($cacheKey, function() use ($movie) {
+            return $this->actualGateway->getRatedByMovie($movie);
+        });
+    }
 }
