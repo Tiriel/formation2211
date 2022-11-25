@@ -6,6 +6,7 @@ use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Omdb\OmdbGateway;
 use App\Repository\MovieRepository;
+use App\Security\Voter\MovieVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,8 @@ class MovieController extends AbstractController
     #[Route('/movies/{id}', name: 'app_movie_details')]
     public function details(Movie $movie): Response
     {
+        $this->denyAccessUnlessGranted(MovieVoter::MOVIE, $movie);
+
         $moviePoster = $this->omdbGateway->getPosterByMovie($movie);
 
         return $this->render('movie/details.html.twig', [
@@ -51,7 +54,7 @@ class MovieController extends AbstractController
             $title = 'N.A.';
         }
 
-        $title
+        $title;
         if ($form->isSubmitted() && $form->isValid()) {
             $movie = $form->getData();
             $movieRepository->save($movie, true);

@@ -4,11 +4,17 @@ namespace App\DataFixtures;
 
 use App\Entity\Genre;
 use App\Entity\Movie;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private readonly UserPasswordHasherInterface $hasher)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $matrixMovie = new Movie();
@@ -40,6 +46,13 @@ class AppFixtures extends Fixture
         $genreMusical->setName('Musical');
         $bluesBrothersMovie->setGenre($genreMusical);
         $manager->persist($genreMusical);
+
+        $admin = new User();
+        $admin
+            ->setEmail('john.doe@admin.com')
+            ->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $admin->setPassword($this->hasher->hashPassword($admin, 'admin1234'));
+        $manager->persist($admin);
 
         $manager->flush();
     }
